@@ -3,15 +3,54 @@
     <v-row>
       <v-col cols="12">
         <h1 class="text-h4 mb-4">SpaceX Launches</h1>
-        <v-select
-          v-model="selectedYear"
-          :items="availableYears"
-          label="Filter by Year"
-          clearable
-          class="mb-4"
-        />
+
+       <v-row class="mb-4" align="center" dense>
+  <!-- Search -->
+  <v-col cols="12" md="4">
+    <v-text-field
+      v-model="searchQuery"
+      label="Search"
+      density="compact"
+      variant="outlined"
+      prepend-inner-icon="mdi-magnify"
+      hide-details
+    />
+  </v-col>
+
+  <!-- Filter by Year -->
+  <v-col cols="12" md="4">
+    <v-select
+      v-model="selectedYear"
+      :items="availableYears"
+      label="Year"
+      clearable
+      density="compact"
+      variant="outlined"
+      hide-details
+    />
+  </v-col>
+
+  <!-- Sort by Date -->
+  <v-col cols="12" md="4">
+    <v-select
+      v-model="sortOrder"
+      :items="[
+        { text: 'Newest First', value: 'desc' },
+        { text: 'Oldest First', value: 'asc' }
+      ]"
+      item-title="text"
+      item-value="value"
+      label="Sort"
+      density="compact"
+      variant="outlined"
+      hide-details
+    />
+  </v-col>
+</v-row>
+
       </v-col>
 
+      <!-- Launch Cards -->
       <v-col
         v-if="!loading"
         v-for="launch in launches"
@@ -36,9 +75,25 @@
       <v-col v-if="error" cols="12">
         <v-alert type="error">Failed to load launches: {{ error.message }}</v-alert>
       </v-col>
+
+      <v-col v-if="!loading && filteredLaunches.length === 0" cols="12">
+        <v-alert type="info">No launches found.</v-alert>
+      </v-col>
+
+      <!-- Pagination -->
+      <v-col cols="12" class="text-center">
+        <v-pagination
+          v-if="totalPages > 1"
+          v-model="currentPage"
+          :length="totalPages"
+          total-visible="7"
+          color="primary"
+        />
+      </v-col>
     </v-row>
   </v-container>
 </template>
+
 
 <script setup lang="ts">
 import LaunchCard from '~/components/LaunchCard.vue'
@@ -46,9 +101,14 @@ import { useLaunches } from '~/composables/useLaunches'
 
 const {
   launches,
-  loading,
-  error,
+  filteredLaunches,
   selectedYear,
   availableYears,
+  sortOrder,
+  searchQuery,
+  currentPage,
+  totalPages,
+  loading,
+  error,
 } = useLaunches()
 </script>

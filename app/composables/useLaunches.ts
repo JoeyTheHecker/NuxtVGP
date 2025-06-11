@@ -1,5 +1,3 @@
-// composables/useLaunches.ts
-import { gql } from 'graphql-tag'
 import { computed, ref } from 'vue'
 
 const GET_LAUNCHES = gql`
@@ -22,26 +20,49 @@ const GET_LAUNCHES = gql`
 export function useLaunches() {
   const selectedYear = ref<string | null>(null)
   const sortOrder = ref<'asc' | 'desc'>('desc')
+  const searchQuery = ref('')
+  const currentPage = ref(1)
+  const perPage = 6
 
-  const { data } = useAsyncQuery(GET_LAUNCHES)
+  const { data, loading, error } = useAsyncQuery(GET_LAUNCHES)
 
-  const launches = computed(() => {
+  const filteredLaunches = computed(() => {
     if (!data.value?.launchesPast) return []
 
-    let filtered = data.value.launchesPast
+    let result = data.value.launchesPast
 
+    // Year filter
     if (selectedYear.value) {
-      filtered = filtered.filter((launch: any) =>
+      result = result.filter((launch: any) =>
         new Date(launch.launch_date_utc).getFullYear().toString() === selectedYear.value
       )
     }
 
-    return filtered.slice().sort((a: any, b: any) => {
+    // Search filter
+    if (searchQuery.value) {
+      result = result.filter((launch: any) =>
+        launch.mission_name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+    }
+
+    // Sort
+    result = result.slice().sort((a: any, b: any) => {
       const dateA = new Date(a.launch_date_utc).getTime()
       const dateB = new Date(b.launch_date_utc).getTime()
       return sortOrder.value === 'asc' ? dateA - dateB : dateB - dateA
     })
+
+    return result
   })
+
+  const launches = computed(() => {
+    const start = (currentPage.value - 1) * perPage
+    return filteredLaunches.value.slice(start, start + perPage)
+  })
+
+  const totalPages = computed(() =>
+    Math.ceil(filteredLaunches.value.length / perPage)
+  )
 
   const availableYears = computed(() => {
     const years = new Set<string>()
@@ -54,8 +75,14 @@ export function useLaunches() {
 
   return {
     launches,
+    filteredLaunches,
     selectedYear,
     availableYears,
     sortOrder,
+    searchQuery,
+    currentPage,
+    totalPages,
+    loading,
+    error,
   }
 }

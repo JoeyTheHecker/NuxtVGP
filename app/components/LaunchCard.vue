@@ -1,5 +1,8 @@
 <template>
-  <v-card class="launch-card" elevation="2">
+  <NuxtLink
+    :to="rocketId ? `/rockets/${rocketId}` : ''"
+      class="text-decoration-none">
+    <v-card class="launch-card" elevation="2">
     <v-card-title class="text-h6 font-weight-bold">
       {{ missionName }}
     </v-card-title>
@@ -15,9 +18,11 @@
       <p v-else><em>No details available.</em></p>
     </v-card-text>
   </v-card>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
+import { NuxtLink } from '#components';
 import { computed } from 'vue'
 import { defineProps } from 'vue'
 
@@ -27,6 +32,7 @@ const props = defineProps<{
   launchSite: string
   rocketName: string
   details?: string
+  rocketId?: string
 }>()
 
 const formattedDate = computed(() =>

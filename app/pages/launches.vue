@@ -2,53 +2,43 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h1 class="text-h4 mb-4">SpaceX Launches</h1>
+       <v-row class="mb-4" align="center" justify="space-between" dense>
 
-       <v-row class="mb-4" align="center" dense>
-  <!-- Search -->
-  <v-col cols="12" md="4">
-    <v-text-field
-      v-model="searchQuery"
-      label="Search"
-      density="compact"
-      variant="outlined"
-      prepend-inner-icon="mdi-magnify"
-      hide-details
-    />
-  </v-col>
+        <v-col cols="12" md="4">
+          <h1 class="text-h5 mb-4">SpaceX Launches</h1>
+        </v-col>
 
-  <!-- Filter by Year -->
-  <v-col cols="12" md="4">
-    <v-select
-      v-model="selectedYear"
-      :items="availableYears"
-      label="Year"
-      clearable
-      density="compact"
-      variant="outlined"
-      hide-details
-    />
-  </v-col>
-
-  <!-- Sort by Date -->
-  <v-col cols="12" md="4">
-    <v-select
-      v-model="sortOrder"
-      :items="[
-        { text: 'Newest First', value: 'desc' },
-        { text: 'Oldest First', value: 'asc' }
-      ]"
-      item-title="text"
-      item-value="value"
-      label="Sort"
-      density="compact"
-      variant="outlined"
-      hide-details
-    />
-  </v-col>
-</v-row>
-
+      <!-- Filter by Year -->
+      <v-col cols="12" md="4">
+        <v-select
+          v-model="selectedYear"
+          :items="availableYears"
+          label="Year"
+          clearable
+          density="compact"
+          variant="outlined"
+          hide-details
+        />
       </v-col>
+
+      <!-- Sort by Date -->
+      <v-col cols="12" md="4">
+        <v-select
+          v-model="sortOrder"
+          :items="[
+            { text: 'Newest First', value: 'desc' },
+            { text: 'Oldest First', value: 'asc' }
+          ]"
+          item-title="text"
+          item-value="value"
+          label="Sort"
+          density="compact"
+          variant="outlined"
+          hide-details
+        />
+      </v-col>
+    </v-row>
+    </v-col>
 
       <!-- Launch Cards -->
       <v-col
@@ -65,6 +55,7 @@
           :launchSite="launch.launch_site?.site_name_long"
           :rocketName="launch.rocket.rocket_name"
           :details="launch.details"
+          :rocketId="launch.rocket.rocket.id"
         />
       </v-col>
 
@@ -105,7 +96,6 @@ const {
   selectedYear,
   availableYears,
   sortOrder,
-  searchQuery,
   currentPage,
   totalPages,
   loading,

@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 
 const GET_LAUNCHES = gql`
   query GetLaunches {
-    launchesPast(limit: 100) {
+    launchesPast {
       id
       mission_name
       launch_date_utc
@@ -11,6 +11,9 @@ const GET_LAUNCHES = gql`
       }
       rocket {
         rocket_name
+        rocket {
+            id
+          }
       }
       details
     }

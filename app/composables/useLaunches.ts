@@ -44,13 +44,6 @@ export function useLaunches() {
       )
     }
 
-    // Search filter
-    if (searchQuery.value) {
-      result = result.filter((launch: any) =>
-        launch.mission_name.toLowerCase().includes(searchQuery.value.toLowerCase())
-      )
-    }
-
     // Sort
     result = result.slice().sort((a: any, b: any) => {
       const dateA = new Date(a.launch_date_utc).getTime()
@@ -85,7 +78,6 @@ export function useLaunches() {
     selectedYear,
     availableYears,
     sortOrder,
-    searchQuery,
     currentPage,
     totalPages,
     loading,

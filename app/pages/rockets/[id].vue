@@ -8,9 +8,15 @@
         </h2>
 
         <!-- Rocket Card -->
-        <v-card class="pa-6 rounded-xl elevation-3">
-          <v-card-title class="text-h4 font-weight-bold mb-4">
-            {{ rocket?.name }}
+        <v-card v-if="rocket" class="pa-6 rounded-xl elevation-3">
+          <v-card-title class="d-flex justify-space-between align-center">
+            <span class="text-h6">{{ rocket.name }}</span>
+            <!-- Favorite button -->
+            <v-btn icon @click="toggleFavorite">
+              <v-icon color="yellow darken-2">
+                {{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}
+              </v-icon>
+            </v-btn>
           </v-card-title>
 
           <v-divider class="mb-4" />
@@ -43,9 +49,10 @@
           <v-divider class="my-4" />
 
           <v-card-actions>
-            <v-btn color="primary" variant="flat" @click="$router.back()">← Back to Launches</v-btn>
+            <v-btn color="primary" variant="flat" @click="goBack">← Back to Launches</v-btn>
           </v-card-actions>
         </v-card>
+        <v-progress-circular v-else indeterminate color="primary" />
       </v-col>
     </v-row>
   </v-container>
@@ -53,14 +60,20 @@
 
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute,useRouter } from 'vue-router'
+import { useFavoritesStore } from '~/stores/favorites'
 
+const router = useRouter()
 const route = useRoute()
+function goBack() {
+  router.back()
+}
 const rocketId = route.params.id as string
 
 const GET_ROCKET = gql`
   query GetRocket($id: ID!) {
     rocket(id: $id) {
+      id
       name
       description
       first_flight
@@ -83,5 +96,16 @@ const { data, error, fetching } = useAsyncQuery({
   variables: { id: rocketId },
 })
 
-const rocket = computed(() => data.value?.rocket)
+const rocket = computed(() => data.value?.rocket || null)
+
+
+const store = useFavoritesStore()
+
+const isFavorite = computed(() => store.isFavorite(rocketId))
+
+function toggleFavorite() {
+  if (rocket.value) {
+  store.toggleFavorite({ id: rocketId, ...rocket.value })
+}
+}
 </script>

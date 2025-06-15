@@ -1,5 +1,4 @@
 <template>
-  <!-- Top App Bar -->
   <v-app-bar color="primary" dark app>
     <v-container class="d-flex align-center justify-space-between">
       <!-- Left: Icon + Title -->
@@ -28,6 +27,15 @@
           }"
         >
           LAUNCHES
+        </NuxtLink>
+        <NuxtLink
+          to="/favorites"
+          class="text-white text-decoration-none mx-2"
+          :class="{
+            'font-weight-bold': route.path === '/favorites'
+          }"
+        >
+          FAVORITES
         </NuxtLink>
       </div>
     </v-container>

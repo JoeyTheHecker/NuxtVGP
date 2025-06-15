@@ -16,6 +16,9 @@ const GET_LAUNCHES = gql`
           }
       }
       details
+      links {
+        mission_patch_small
+      }
     }
   }
 `

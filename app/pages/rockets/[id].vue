@@ -60,48 +60,21 @@
 
 
 <script setup lang="ts">
-import { useRoute,useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useFavoritesStore } from '~/stores/favorites'
-import type { RocketQueryResult } from '~/types/rocket'
+import { useRocket } from '~/composables/useRocket'
+
+const {
+  rocket,
+  rocketId
+} = useRocket()
 
 const router = useRouter()
-const route = useRoute()
 function goBack() {
   router.back()
 }
-const rocketId = route.params.id as string
-
-const GET_ROCKET = gql`
-  query GetRocket($id: ID!) {
-    rocket(id: $id) {
-      id
-      name
-      description
-      first_flight
-      height {
-        meters
-      }
-      diameter {
-        meters
-      }
-      mass {
-        kg
-      }
-      stages
-    }
-  }
-`
-
-const { data } = useAsyncQuery<RocketQueryResult>({
-  query: GET_ROCKET,
-  variables: { id: rocketId },
-})
-
-const rocket = computed(() => data.value?.rocket || null)
-
 
 const store = useFavoritesStore()
-
 const isFavorite = computed(() => store.isFavorite(rocketId))
 
 function toggleFavorite() {

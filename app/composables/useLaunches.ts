@@ -1,28 +1,6 @@
 import { computed, ref } from 'vue'
 import type { LaunchesPastResult } from '~/types/launches'
-
-const GET_LAUNCHES = gql`
-  query GetLaunches {
-    launchesPast {
-      id
-      mission_name
-      launch_date_utc
-      launch_site {
-        site_name_long
-      }
-      rocket {
-        rocket_name
-        rocket {
-            id
-          }
-      }
-      details
-      links {
-        mission_patch_small
-      }
-    }
-  }
-`
+import { GET_LAUNCHES } from '~/graphql/launches'
 
 export function useLaunches() {
   const selectedYear = ref<string | null>(null)

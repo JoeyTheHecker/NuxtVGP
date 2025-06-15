@@ -60,7 +60,7 @@ import { ref, computed, defineProps } from 'vue'
 const props = defineProps<{
   missionName: string
   launchDateUtc: string
-  launchSite: string
+  launchSite?: string
   rocketName: string
   details?: string
   rocketId?: string

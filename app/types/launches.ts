@@ -2,7 +2,7 @@ export interface Launch {
   id: string
   mission_name: string
   launch_date_utc: string
-  launch_site: {
+  launch_site?: {
     site_name_long: string
   }
   rocket: {

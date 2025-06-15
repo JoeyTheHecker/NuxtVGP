@@ -91,7 +91,7 @@ const GET_ROCKET = gql`
   }
 `
 
-const { data, error, fetching } = useAsyncQuery({
+const { data } = useAsyncQuery({
   query: GET_ROCKET,
   variables: { id: rocketId },
 })

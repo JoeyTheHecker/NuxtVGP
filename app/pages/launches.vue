@@ -42,7 +42,6 @@
 
       <!-- Launch Cards -->
       <v-col
-        v-if="!loading"
         v-for="launch in launches"
         :key="launch.id"
         cols="12"
@@ -59,16 +58,12 @@
         />
       </v-col>
 
-      <v-col v-if="loading" cols="12">
-        <v-progress-circular indeterminate color="primary" />
-      </v-col>
-
       <v-col v-if="error" cols="12">
         <v-alert type="error">Failed to load launches: {{ error.message }}</v-alert>
       </v-col>
 
-      <v-col v-if="!loading && filteredLaunches.length === 0" cols="12">
-        <v-alert type="info">No launches found.</v-alert>
+      <v-col v-if="filteredLaunches.length === 0" cols="12">
+        <v-progress-circular indeterminate color="primary" />
       </v-col>
 
       <!-- Pagination -->
@@ -98,7 +93,6 @@ const {
   sortOrder,
   currentPage,
   totalPages,
-  loading,
   error,
 } = useLaunches()
 </script>

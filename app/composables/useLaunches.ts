@@ -7,8 +7,7 @@ export function useLaunches() {
   const sortOrder = ref<'asc' | 'desc'>('desc')
   const currentPage = ref(1)
   const perPage = 6
-  const loading = ref(false)
-  const { data, error } = useAsyncQuery<LaunchesPastResult>(GET_LAUNCHES)
+  const { data, error, } = useAsyncQuery<LaunchesPastResult>(GET_LAUNCHES)
 
   const filteredLaunches = computed(() => {
     if (!data.value?.launchesPast) return []
@@ -58,7 +57,6 @@ export function useLaunches() {
     sortOrder,
     currentPage,
     totalPages,
-    loading,
     error,
   }
 }

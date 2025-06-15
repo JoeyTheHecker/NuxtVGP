@@ -81,12 +81,13 @@ const formattedDate = computed(() =>
   })
 )
 
-const isLongDetails = computed(() => props.details?.length > 180)
+const isLongDetails = computed(() => (props.details?.length ?? 0) > 180)
 
 const trimmedDetails = computed(() =>
   props.details && props.details.length > 180
     ? props.details.slice(0, 180) + '...'
     : props.details
+    
 )
 </script>
 

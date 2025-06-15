@@ -62,6 +62,7 @@
 <script setup lang="ts">
 import { useRoute,useRouter } from 'vue-router'
 import { useFavoritesStore } from '~/stores/favorites'
+import type { RocketQueryResult } from '~/types/rocket'
 
 const router = useRouter()
 const route = useRoute()
@@ -91,7 +92,7 @@ const GET_ROCKET = gql`
   }
 `
 
-const { data } = useAsyncQuery({
+const { data } = useAsyncQuery<RocketQueryResult>({
   query: GET_ROCKET,
   variables: { id: rocketId },
 })
@@ -105,7 +106,7 @@ const isFavorite = computed(() => store.isFavorite(rocketId))
 
 function toggleFavorite() {
   if (rocket.value) {
-  store.toggleFavorite({ id: rocketId, ...rocket.value })
+  store.toggleFavorite(rocket.value)
 }
 }
 </script>

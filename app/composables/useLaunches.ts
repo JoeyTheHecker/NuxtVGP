@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import type { LaunchesPastResult } from '~/types/launches'
 
 const GET_LAUNCHES = gql`
   query GetLaunches {
@@ -26,11 +27,10 @@ const GET_LAUNCHES = gql`
 export function useLaunches() {
   const selectedYear = ref<string | null>(null)
   const sortOrder = ref<'asc' | 'desc'>('desc')
-  const searchQuery = ref('')
   const currentPage = ref(1)
   const perPage = 6
-
-  const { data, loading, error } = useAsyncQuery(GET_LAUNCHES)
+  const loading = ref(false)
+  const { data, error } = useAsyncQuery<LaunchesPastResult>(GET_LAUNCHES)
 
   const filteredLaunches = computed(() => {
     if (!data.value?.launchesPast) return []

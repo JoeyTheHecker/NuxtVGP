@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
+import type { Rocket } from '@/types/rocket'
 
 export const useFavoritesStore = defineStore('favorites', {
   state: () => ({
-    favorites: [] as Array<{ id: string; name: string; description: string; first_flight: string; height: any; diameter: any; mass: any; stages: number }>
+    favorites: [] as Rocket[]
   }),
   actions: {
     toggleFavorite(rocket: any) {
@@ -19,5 +20,6 @@ export const useFavoritesStore = defineStore('favorites', {
     clearFavorites() {
       this.favorites = []
     }
-  }
+  },
+  persist: true
 })

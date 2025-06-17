@@ -8,7 +8,10 @@ export function useLaunches() {
   const router = useRouter()
 
   const currentPage = ref(Number(route.query.page) || 1)
-  const selectedYear = ref(route.query.year || '')
+  const selectedYear = ref(
+  Array.isArray(route.query.year) ? route.query.year[0] : route.query.year || ''
+)
+
   const sortOrder = ref(route.query.sort || 'desc')
 
   const perPage = 6
